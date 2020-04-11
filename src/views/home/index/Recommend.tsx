@@ -1,8 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Carousel from "../../../components/Carousel";
 import { Link } from "react-router-dom";
+import * as API from "../../../api/API_URL";
+import $http from "../../../api";
 
 const Recommend: React.FC = props => {
+    const [recList, setRecList] = useState([])
+    const init = async () => {
+        const res = await $http.get(API.REC_LIST)
+        setRecList(res.data.data.list.length >= 6 ? res.data.data.list.slice(0, 5) : res.data.data.list)
+    }
+    useEffect(() => {
+        init()
+    }, [])
+
     return (
         <div>
             <Carousel images={[
@@ -35,8 +46,14 @@ const Recommend: React.FC = props => {
                     云音乐热歌榜
                 </Link>
             </div>
+            <div className="rec-list-header"><span>推荐歌单</span><img src={require('../../../assets/image/common_icon_arrow@2x.png')} alt="" /></div>
             <div className="rec-list">
-
+                {recList.map((item: any) => (
+                    <Link to="">
+                        <img src={item.cover} alt="" />
+                        <div>{item.title}</div>
+                    </Link>
+                ))}
             </div>
         </div>
 
