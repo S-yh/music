@@ -1,8 +1,11 @@
 import React from 'react'
+import SearchHeader from '../../components/SearchHeader'
 
 const Search: React.FC = props => {
     return (
-        <div>asdasd</div>
+        <div>
+            <SearchHeader />
+        </div>
     )
 }
 

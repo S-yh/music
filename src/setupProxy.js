@@ -4,12 +4,12 @@ module.exports = function (app) {
     app.use(
         '/api',
         createProxyMiddleware({
-            target: "http://localhost:3300/",
+            target: "https://s-yh.cn:8888",
             changeOrigin: true,
             ws: false,
-            pathRewrite: {
-                '^/api': '/'
-            }
+            // pathRewrite: {
+            //     '^/api': '/api'
+            // }
         })
     );
 };
