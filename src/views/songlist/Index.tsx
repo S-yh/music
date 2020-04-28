@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import $http from '../../api'
 import * as API from "../../api/API_URL";
 import { useLocation, useHistory } from 'react-router-dom';
@@ -19,7 +19,7 @@ const Index: React.FC = props => {
     const [songlist, setSonglist] = useState<Songlist>({ info: {}, list: [], songlist: [] } as Songlist)
     const history = useHistory()
 
-    const init = async () => {
+    const init = useCallback(async () => {
         if (!!rankId) {
             const res = await $http.get(API.RANK_LIST_ID + Number(rankId))
             setSonglist(res.data.data)
@@ -28,13 +28,13 @@ const Index: React.FC = props => {
             const res = await $http.get(API.SONG_LIST_ID + Number(listId))
             setSonglist(res.data.data)
         }
-    }
+    }, [rankId, listId])
     const play = (mid: string) => {
         player.play(mid)
     }
     useEffect(() => {
         init()
-    }, [])
+    }, [init])
 
     return (
         <div className="songlist">
@@ -54,35 +54,35 @@ const Index: React.FC = props => {
                     !!listId && <span className="sub-title"><img src={songlist.headurl} alt="" />{songlist.nickname}<i className="iconfont icon-back" /></span>
                 }
                 <div className="ops">
-                    <div className="ops-icon"><i className="iconfont icon-fav"/></div>
-                    <div className="ops-icon"><i className="iconfont icon-xc_cmt"/></div>
-                    <div className="ops-icon"><i className="iconfont icon-share"/></div>
-                    <div className="ops-icon"><i className="iconfont icon-download"/></div>
+                    <div className="ops-icon"><i className="iconfont icon-fav" /></div>
+                    <div className="ops-icon"><i className="iconfont icon-xc_cmt" /></div>
+                    <div className="ops-icon"><i className="iconfont icon-share" /></div>
+                    <div className="ops-icon"><i className="iconfont icon-download" /></div>
                 </div>
             </div>
             <div className="songlist-list">
-                <div className="play"><img src={require('../../assets/image/pl-playall.png')} alt="" />播放全部</div>
+                <div className="play"><img src={require('../../assets/image/pl-playall.png')} alt="" /><span>播放全部</span></div>
                 <div className="list">
                     {
-                        !!rankId && songlist.list.map((item:any, index) => (
-                            <div className="list-item">
+                        !!rankId && songlist.list.map((item: any, index) => (
+                            <div className="list-item" key={index}>
                                 <p>{index + 1}</p>
                                 <li onClick={() => play(item.mid)} onTouchEnd={() => play(item.mid)}>
                                     <div>{item.name}</div>
                                     <div className="singer">{item.singerName}</div>
-                                    <img src={require('../../assets/image/cm4_act_icn_more@2x.png')} alt=""/>
+                                    <img src={require('../../assets/image/cm4_act_icn_more@2x.png')} alt="" />
                                 </li>
                             </div>
                         ))
                     }
                     {
-                        !!listId && songlist.songlist.map((item:any, index) => (
-                            <div className="list-item">
+                        !!listId && songlist.songlist.map((item: any, index) => (
+                            <div className="list-item" key={index}>
                                 <p>{index + 1}</p>
                                 <li>
                                     <div>{item.songname}</div>
                                     <div className="singer">{item.singer[0].name} - {item.albumname}</div>
-                                    <img src={require('../../assets/image/cm4_act_icn_more@2x.png')} alt=""/>
+                                    <img src={require('../../assets/image/cm4_act_icn_more@2x.png')} alt="" />
                                 </li>
                             </div>
                         ))

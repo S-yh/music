@@ -10,6 +10,10 @@ const Rank: React.FC = props => {
         const res = await $http.get(API.RANK)
         setRankList(res.data.data)
     }
+
+    const cacheRankId = async () => {
+        
+    }
     useEffect(() => {
         init()
     }, [])
@@ -29,6 +33,7 @@ const Rank: React.FC = props => {
                                         pathname: "/songlist",
                                         state: { rankId: list.value, imgUrl: list.picUrl }
                                     }}
+                                    onClick={cacheRankId}
                                 >
                                     <div className="rank-detail-title">{list.label}</div>
                                     {
